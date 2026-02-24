@@ -18,12 +18,10 @@ public class LevelCompleteScreen : MonoBehaviour
     public void OnNextButtonPressed()
     {
         GameEvents.FirePlayButtonPressed();
-        ScreenManager.Instance.HideScreen(screenType);
     }
 
     public void OnHomeButtonPressed()
     {
         GameEvents.FireHomeButtonPressed();
-        ScreenManager.Instance.ShowScreen(ScreenType.MainMenuScreen);
     }
 }

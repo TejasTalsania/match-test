@@ -48,6 +48,12 @@ public class GamePlayManager : MonoBehaviour
     private void LoadLevel(int level)
     {
         var data = JsonLoader.LoadLevel(level);
+
+        if (data == null)
+        {
+            Debug.LogError("Level number " +  level + " not found");
+            return;
+        }
         
         GameEvents.FireResetLevel();
         gridView.ResetLevel();
@@ -104,7 +110,7 @@ public class GamePlayManager : MonoBehaviour
     private void ShowLevelCompleteScreen()
     {
         GameEvents.FireSoundRequested(SoundType.LevelComplete);
-        ScreenManager.Instance.ShowScreen(ScreenType.LevelCompleteScreen);
+        GameEvents.FireLevelCompleted();
     }
 
     // generate card pairs from level json to play fair...

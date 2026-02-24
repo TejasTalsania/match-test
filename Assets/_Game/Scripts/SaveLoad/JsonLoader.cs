@@ -5,7 +5,8 @@ public class JsonLoader
 {
     public static LevelData LoadLevel(int levelNumber)
     {
-        TextAsset json = Resources.Load<TextAsset>($"Levels/level_{levelNumber}");
+        var levelStr = "Levels/level_" + levelNumber;
+        var json = Resources.Load<TextAsset>(levelStr);
         return JsonUtility.FromJson<LevelData>(json.text);
     }
 }

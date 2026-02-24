@@ -8,6 +8,5 @@ public class MainMenuScreen : MonoBehaviour
     public void OnPlayButtonPressed()
     {
         GameEvents.FirePlayButtonPressed();
-        ScreenManager.Instance.HideScreen(screenType);
     }
 }

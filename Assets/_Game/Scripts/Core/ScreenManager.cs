@@ -12,28 +12,12 @@ public enum ScreenType
 
 public class ScreenManager : MonoBehaviour
 {
-    [Serializable]
-    public class Screen
-    {
-        public ScreenType type;
-        public BaseScreen screen;
-    }
-    public static ScreenManager Instance;
     [SerializeField] private List<Screen> allScreens = new List<Screen>();
     private Dictionary<ScreenType, BaseScreen> _screenMap;
     private BaseScreen _currentScreen;
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            DestroyImmediate(this.gameObject);
-        }
-        
         _screenMap = new Dictionary<ScreenType, BaseScreen>();
 
         for (var i = 0; i < allScreens.Count; i++)
@@ -42,6 +26,20 @@ public class ScreenManager : MonoBehaviour
         }
         
         _currentScreen = _screenMap[ScreenType.MainMenuScreen];
+    }
+
+    private void OnEnable()
+    {
+        GameEvents.OnHomeButtonPressed += OnOpenMainMenuScreen;
+        GameEvents.OnPlayButtonPressed += OnPlayButtonPressed;
+        GameEvents.OnLevelCompleted += ShowLevelCompleteScreen;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnHomeButtonPressed -= OnOpenMainMenuScreen;
+        GameEvents.OnPlayButtonPressed -= OnPlayButtonPressed;
+        GameEvents.OnLevelCompleted -= ShowLevelCompleteScreen;
     }
 
     public void ShowScreen(ScreenType type)
@@ -64,4 +62,26 @@ public class ScreenManager : MonoBehaviour
             _currentScreen = null;
         }
     }
+
+    private void OnOpenMainMenuScreen()
+    {
+        ShowScreen(ScreenType.MainMenuScreen);
+    }
+    
+    private void OnPlayButtonPressed()
+    {
+        _currentScreen.Hide();
+    }
+    
+    private void ShowLevelCompleteScreen()
+    {
+        ShowScreen(ScreenType.LevelCompleteScreen);
+    }
+}
+
+[Serializable]
+public class Screen
+{
+    public ScreenType type;
+    public BaseScreen screen;
 }

@@ -9,6 +9,7 @@ public static class GameEvents
     public static Action<int> OnLevelNumberUpdated;
     public static Action OnPlayButtonPressed;
     public static Action OnHomeButtonPressed;
+    public static Action OnLevelCompleted;
     public static Action OnNextButtonPressed;
     public static Action OnSettingButtonPressed;
     public static Action<SoundType> OnSoundRequested;
@@ -41,6 +42,11 @@ public static class GameEvents
     public static void FireHomeButtonPressed()
     {
         OnHomeButtonPressed?.Invoke();
+    }
+
+    public static void FireLevelCompleted()
+    {
+        OnLevelCompleted?.Invoke();
     }
     
     public static void FireNextButtonPressed()

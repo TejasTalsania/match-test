@@ -6,7 +6,6 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSource))]
 public class AudioManager : MonoBehaviour
 {
-    public static AudioManager Instance;
     [SerializeField] private List<SoundSFX> allSounds;
     private AudioSource audioSource;
 
@@ -14,15 +13,6 @@ public class AudioManager : MonoBehaviour
     
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            DestroyImmediate(this.gameObject);
-        }
-        
         audioSource = GetComponent<AudioSource>();
         _soundMap = new Dictionary<SoundType, AudioClip>();
 
