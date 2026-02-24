@@ -1,0 +1,3 @@
+- Total 9 levels are there.
+- Resume button on main menu only active if game quit in between level.
+- after 9 level new level starts from 1.
