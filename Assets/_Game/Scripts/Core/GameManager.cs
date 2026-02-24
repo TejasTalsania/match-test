@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
@@ -12,7 +13,28 @@ public class GameManager : MonoBehaviour
     private List<CardView> activeCards = new();
 
     private int currentLevel = 1;
-    
+
+    private void OnEnable()
+    {
+        matcher = new CardMatcher();
+        matcher.OsTurnCompleted += HandleTurnResult;
+    }
+
+    private void OnDisable()
+    {
+        matcher.OsTurnCompleted -= HandleTurnResult;
+    }
+
+    private void HandleTurnResult(bool result)
+    {
+        GameEvents.FireTurnTaken();
+        if (result)
+        {
+            GameEvents.FireMatchSuccess();
+            CheckLevelComplete();
+        }
+    }
+
     private void Start()
     {
         LoadLevel(currentLevel);
@@ -21,7 +43,7 @@ public class GameManager : MonoBehaviour
     // Loads level from json and generate cards to play...
     private void LoadLevel(int level)
     {
-        matcher = new CardMatcher();
+        
         var data = JsonLoader.LoadLevel(level);
         
         gridView.ResetLevel();
@@ -51,18 +73,20 @@ public class GameManager : MonoBehaviour
     // when card clicked then try to match here and if matched check for level complete...
     private void OnCardClicked(CardView card)
     {
-        if (matcher.TryMatch(card))
-        {
-            // card matched and do destroy logic....
-            GameEvents.FireMatchSuccess();
-            GameEvents.FireTurnTaken();
-            CheckLevelComplete();
-            return;
-        }
-
-        if (!matcher.IsSecondCard()) return; // Hide cards only if second card clicked and not matched
-        GameEvents.FireTurnTaken();
-        StartCoroutine(HideAfterDelay());
+        matcher.SelectCard(card);
+        
+        // if (matcher.TryMatch(card))
+        // {
+        //     // card matched and do destroy logic....
+        //     GameEvents.FireMatchSuccess();
+        //     GameEvents.FireTurnTaken();
+        //     CheckLevelComplete();
+        //     return;
+        // }
+        //
+        // if (!matcher.IsSecondCard()) return; // Hide cards only if second card clicked and not matched
+        // GameEvents.FireTurnTaken();
+        // StartCoroutine(HideAfterDelay());
     }
     
     // if not matched then hide card again...

@@ -1,8 +1,60 @@
 // Card matching responsibility...
+
+using System;
+
 public class CardMatcher
 {
     private CardView _firstCard;
     private CardView _secondCard;
+
+    public event Action<bool> OsTurnCompleted;
+
+    public void SelectCard(CardView card)
+    {
+        if (card.IsMatched())
+        {
+            return;
+        }
+
+        if (_firstCard != null && _secondCard != null)
+        {
+            ResetUnmatched();
+        }
+
+        if (_firstCard == null)
+        {
+            _firstCard = card;
+            return;
+        }
+
+        if (_secondCard == null && card != _firstCard)
+        {
+            _secondCard = card;
+            CompleteTurn();
+        }
+    }
+
+    public void ResetUnmatched()
+    {
+        if (!_firstCard.IsMatched()) _firstCard.HideFrontSide();
+        if (!_secondCard.IsMatched()) _secondCard.HideFrontSide();
+
+        _firstCard = null;
+        _secondCard = null;
+    }
+    
+    public void CompleteTurn()
+    {
+        var isMatch = _firstCard.GetId() ==  _secondCard.GetId();
+        if (isMatch)
+        {
+            _firstCard.SetMatched();
+            _secondCard.SetMatched();
+        }
+        
+        OsTurnCompleted?.Invoke(isMatch);
+    }
+    
     
     // Match for 2 opened cards...
     public bool TryMatch(CardView card)
