@@ -39,6 +39,7 @@ public class CardMatcher
         }
     }
 
+    // hide cards again if not matched...
     private void ResetUnmatched()
     {
         if (!_firstCard.IsMatched()) _firstCard.HideFrontSide();

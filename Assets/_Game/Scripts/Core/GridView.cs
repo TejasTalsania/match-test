@@ -28,7 +28,7 @@ public class GridView : MonoBehaviour
     
         return views;
     }
-
+    
     // Clears all cards from parent for new level...
     public void ResetLevel()
     {

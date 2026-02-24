@@ -48,7 +48,7 @@ public class CardView : MonoBehaviour
         });
     }
     
-    private void SetCardFrontSprite()
+    public void SetCardFrontSprite()
     {
         cardSprite.sprite = _frontSprite;
     }

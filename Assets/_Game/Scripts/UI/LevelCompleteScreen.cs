@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class LevelCompleteScreen : MonoBehaviour
 {
-    [SerializeField] private ScreenType screenType;
     private int currentLevel = 1;
 
     private void OnEnable()

@@ -32,6 +32,7 @@ public class ScreenManager : MonoBehaviour
     {
         GameEvents.OnHomeButtonPressed += OnOpenMainMenuScreen;
         GameEvents.OnPlayButtonPressed += OnPlayButtonPressed;
+        GameEvents.OnResumeButtonPressed += OnPlayButtonPressed;
         GameEvents.OnLevelCompleted += ShowLevelCompleteScreen;
     }
 
@@ -39,6 +40,7 @@ public class ScreenManager : MonoBehaviour
     {
         GameEvents.OnHomeButtonPressed -= OnOpenMainMenuScreen;
         GameEvents.OnPlayButtonPressed -= OnPlayButtonPressed;
+        GameEvents.OnResumeButtonPressed -= OnPlayButtonPressed;
         GameEvents.OnLevelCompleted -= ShowLevelCompleteScreen;
     }
 
@@ -51,15 +53,6 @@ public class ScreenManager : MonoBehaviour
         {
             _currentScreen = newScreen;
             _currentScreen.Show();
-        }
-    }
-
-    public void HideScreen(ScreenType type)
-    {
-        if (_currentScreen != null)
-        {
-            _currentScreen.Hide();
-            _currentScreen = null;
         }
     }
 
