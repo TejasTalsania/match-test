@@ -184,7 +184,6 @@ public class GamePlayManager : MonoBehaviour
 
         if (isCompleted)
         {
-            SaveManager.ResetDataOnLevelComplete();
             Invoke(nameof(ShowLevelCompleteScreen), 0.6F);
         }
         else
@@ -195,6 +194,7 @@ public class GamePlayManager : MonoBehaviour
 
     private void ShowLevelCompleteScreen()
     {
+        SaveManager.ResetDataOnLevelComplete();
         GameEvents.FireSoundRequested(SoundType.LevelComplete);
         GameEvents.FireLevelCompleted();
     }
