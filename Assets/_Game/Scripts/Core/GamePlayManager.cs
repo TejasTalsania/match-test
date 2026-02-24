@@ -30,7 +30,7 @@ public class GamePlayManager : MonoBehaviour
         currentLevel = PlayerPrefs.GetInt(GameConfig.CurrentLevelPrefName, 1);
         if (currentLevel > GameConfig.TotalLevels)
             currentLevel = 1;
-        GameEvents.OnLevelNumberUpdated(currentLevel); // level number update handle...
+        GameEvents.FireLevelNumberUpdated(currentLevel); // level number update handle...
         LoadLevel(currentLevel);
     }
 
@@ -49,6 +49,7 @@ public class GamePlayManager : MonoBehaviour
     {
         var data = JsonLoader.LoadLevel(level);
         
+        GameEvents.FireResetLevel();
         gridView.ResetLevel();
         gridView.SetRowColumn(data.columns);
 
@@ -96,12 +97,13 @@ public class GamePlayManager : MonoBehaviour
 
         if (isCompleted)
         {
-            Invoke(nameof(ShowLevelCompleteScreen), 0.5F);
+            Invoke(nameof(ShowLevelCompleteScreen), 0.6F);
         }
     }
 
     private void ShowLevelCompleteScreen()
     {
+        GameEvents.FireSoundRequested(SoundType.LevelComplete);
         ScreenManager.Instance.ShowScreen(ScreenType.LevelCompleteScreen);
     }
 

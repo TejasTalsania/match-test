@@ -62,6 +62,7 @@ public class CardView : MonoBehaviour
     {
         if (_model.IsCardOpened()) return;
         _model.SetOpened();
+        GameEvents.FireSoundRequested(SoundType.CardFlip);
         ShowFrontSide();
     }
 

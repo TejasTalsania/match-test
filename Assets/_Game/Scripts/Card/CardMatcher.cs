@@ -1,6 +1,7 @@
 // Card matching responsibility...
 
 using System;
+using UnityEngine;
 
 public class CardMatcher
 {
@@ -52,8 +53,13 @@ public class CardMatcher
         var isMatch = _firstCard.GetId() ==  _secondCard.GetId();
         if (isMatch)
         {
+            GameEvents.FireSoundRequested(SoundType.CardMatch);
             _firstCard.SetMatched();
             _secondCard.SetMatched();
+        }
+        else
+        {
+            GameEvents.FireSoundRequested(SoundType.CardNoMatch);
         }
         
         OsTurnCompleted?.Invoke(isMatch);

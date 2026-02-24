@@ -14,7 +14,7 @@ public class GameplayUIHandler : MonoBehaviour
 
     private void OnEnable()
     {
-        ResetTurnAndMatchCount();
+        GameEvents.OnResetLevel += ResetTurnAndMatchCount;
         GameEvents.OnTurnTaken += UpdateTurnCount;
         GameEvents.OnMatchSuccess += UpdateMatchCount;
         GameEvents.OnLevelNumberUpdated += UpdateLevelnumber;
@@ -22,6 +22,7 @@ public class GameplayUIHandler : MonoBehaviour
 
     private void OnDisable()
     {
+        GameEvents.OnResetLevel -= ResetTurnAndMatchCount;
         GameEvents.OnTurnTaken -= UpdateTurnCount;
         GameEvents.OnMatchSuccess -= UpdateMatchCount;
         GameEvents.OnLevelNumberUpdated -= UpdateLevelnumber;
