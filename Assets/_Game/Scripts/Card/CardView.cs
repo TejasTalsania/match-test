@@ -78,7 +78,7 @@ public class CardView : MonoBehaviour
     // if matched then animate to delete that cards...
     public void SetMatched()
     {
-        transform.DOScale(Vector3.zero, 0.1F).SetDelay(0.25F).SetEase(Ease.OutBack);
+        transform.DOScale(Vector3.zero, 0.15F).SetDelay(0.25F).SetEase(Ease.InBack);
         _model.SetMatched();
     }
 }

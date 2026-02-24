@@ -29,7 +29,6 @@ public class CardMatcher
             _firstCard = card;
             return;
         }
-
         
         // if second card is null and not same as first card then assign second card and complete turn and check for match...
         if (_secondCard == null && card != _firstCard)

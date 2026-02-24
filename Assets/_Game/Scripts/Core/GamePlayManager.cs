@@ -1,10 +1,8 @@
 using System;
 using UnityEngine;
-using UnityEngine.UI;
-using System.Collections;
 using System.Collections.Generic;
 
-public class GameManager : MonoBehaviour
+public class GamePlayManager : MonoBehaviour
 {
     [SerializeField] private GridView gridView;
     [SerializeField] private CardFrontSpritesData cardFrontSprites;
@@ -18,11 +16,22 @@ public class GameManager : MonoBehaviour
     {
         matcher = new CardMatcher();
         matcher.OsTurnCompleted += HandleTurnResult;
+        GameEvents.OnPlayButtonPressed += HandlePlayButtonPress;
     }
 
     private void OnDisable()
     {
         matcher.OsTurnCompleted -= HandleTurnResult;
+        GameEvents.OnPlayButtonPressed -= HandlePlayButtonPress;
+    }
+
+    private void HandlePlayButtonPress()
+    {
+        currentLevel = PlayerPrefs.GetInt(GameConfig.CurrentLevelPrefName, 1);
+        if (currentLevel > GameConfig.TotalLevels)
+            currentLevel = 1;
+        GameEvents.OnLevelNumberUpdated(currentLevel); // level number update handle...
+        LoadLevel(currentLevel);
     }
 
     private void HandleTurnResult(bool result)
@@ -35,15 +44,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        LoadLevel(currentLevel);
-    }
-
     // Loads level from json and generate cards to play...
     private void LoadLevel(int level)
     {
-        
         var data = JsonLoader.LoadLevel(level);
         
         gridView.ResetLevel();
@@ -93,12 +96,13 @@ public class GameManager : MonoBehaviour
 
         if (isCompleted)
         {
-            Debug.Log("TEST 1 = " + "Level Completed = " + currentLevel);
+            Invoke(nameof(ShowLevelCompleteScreen), 0.5F);
         }
-        else
-        {
-            Debug.Log("TEST 2 = " + "Level Not Completed = " + currentLevel);
-        }
+    }
+
+    private void ShowLevelCompleteScreen()
+    {
+        ScreenManager.Instance.ShowScreen(ScreenType.LevelCompleteScreen);
     }
 
     // generate card pairs from level json to play fair...

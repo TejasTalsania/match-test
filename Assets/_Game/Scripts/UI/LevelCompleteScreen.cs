@@ -1,0 +1,29 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class LevelCompleteScreen : MonoBehaviour
+{
+    [SerializeField] private ScreenType screenType;
+    private int currentLevel = 1;
+
+    private void OnEnable()
+    {
+        currentLevel = PlayerPrefs.GetInt(GameConfig.CurrentLevelPrefName, 1);
+        currentLevel++;
+        PlayerPrefs.SetInt(GameConfig.CurrentLevelPrefName, currentLevel);
+    }
+
+    public void OnNextButtonPressed()
+    {
+        GameEvents.FirePlayButtonPressed();
+        ScreenManager.Instance.HideScreen(screenType);
+    }
+
+    public void OnHomeButtonPressed()
+    {
+        GameEvents.FireHomeButtonPressed();
+        ScreenManager.Instance.ShowScreen(ScreenType.MainMenuScreen);
+    }
+}

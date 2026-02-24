@@ -34,7 +34,7 @@ public class GridView : MonoBehaviour
     {
         if (parent.childCount > 0)
         {
-            for (var i = 0; i < parent.childCount; i++)
+            for (var i = parent.childCount - 1; i >= 0; i--)
             {
                 DestroyImmediate(parent.GetChild(i).gameObject);
             }
