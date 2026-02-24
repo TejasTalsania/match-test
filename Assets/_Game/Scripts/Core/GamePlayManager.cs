@@ -10,7 +10,8 @@ public class GamePlayManager : MonoBehaviour
     private CardMatcher matcher;
     private List<CardView> activeCards = new();
 
-    private int currentLevel = 1;
+    private int _currentLevel = 1;
+    private int _comboCount = 0;
 
     private void OnEnable()
     {
@@ -29,11 +30,11 @@ public class GamePlayManager : MonoBehaviour
 
     private void HandlePlayButtonPress()
     {
-        currentLevel = PlayerPrefs.GetInt(GameConfig.CurrentLevelPrefName, 1);
-        if (currentLevel > GameConfig.TotalLevels)
-            currentLevel = 1;
-        GameEvents.FireLevelNumberUpdated(currentLevel); // level number update handle...
-        LoadLevel(currentLevel);
+        _currentLevel = PlayerPrefs.GetInt(GameConfig.CurrentLevelPrefName, 1);
+        if (_currentLevel > GameConfig.TotalLevels)
+            _currentLevel = 1;
+        GameEvents.FireLevelNumberUpdated(_currentLevel); // level number update handle...
+        LoadLevel(_currentLevel);
     }
     
     // Loads level from json and generate cards to play...
@@ -79,7 +80,7 @@ public class GamePlayManager : MonoBehaviour
         }
         
         // save data from start if user quits between level...
-        SaveManager.SetDataOnLevelStart(currentLevel, data.rows, data.columns, activeCards);
+        SaveManager.SetDataOnLevelStart(_currentLevel, data.rows, data.columns, activeCards);
     }
     
     private void HandleResumeButtonPress()
@@ -137,8 +138,26 @@ public class GamePlayManager : MonoBehaviour
         GameEvents.FireTurnTaken();
         if (result)
         {
+            _comboCount++;
+            GameEvents.FireScoreUpdate(GameConfig.MatchScore);
             GameEvents.FireMatchSuccess();
             CheckLevelComplete();
+        }
+        else
+        {
+            _comboCount = 0;
+        }
+
+        // if combo increases then score increase according to that...
+        if (_comboCount > 1)
+        {
+            var comboCount = _comboCount - 1;
+            GameEvents.FireComboUpdate(comboCount); // here -1 because 1st match is not count as a combo...
+            if (comboCount > 0)
+            {
+                var scoreToAdd = comboCount * GameConfig.ComboScore;
+                GameEvents.FireScoreUpdate(scoreToAdd);
+            }
         }
     }
 

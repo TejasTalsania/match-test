@@ -6,8 +6,8 @@ public static class GameEvents
     public static Action OnResetLevel;
     public static Action OnTurnUpdated;
     public static Action OnMatchCardUpdated;
-    public static Action OnComboUpdated;
-    public static Action OnScoreUpdated;
+    public static Action<int> OnComboUpdated;
+    public static Action<int> OnScoreUpdated;
     public static Action<LevelSaveData> OnLevelResumed;
     public static Action<int> OnLevelNumberUpdated;
     public static Action OnPlayButtonPressed;
@@ -31,14 +31,14 @@ public static class GameEvents
         OnMatchCardUpdated?.Invoke();
     }
 
-    public static void FireComboUpdate()
+    public static void FireComboUpdate(int count)
     {
-        OnComboUpdated?.Invoke();
+        OnComboUpdated?.Invoke(count);
     }
     
-    public static void FireScoreUpdate()
+    public static void FireScoreUpdate(int scoreToAdd)
     {
-        OnScoreUpdated?.Invoke();
+        OnScoreUpdated?.Invoke(scoreToAdd);
     }
 
     public static void FireLevelResumed(LevelSaveData data)
