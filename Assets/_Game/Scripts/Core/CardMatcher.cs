@@ -11,22 +11,27 @@ public class CardMatcher
 
     public void SelectCard(CardView card)
     {
+        // if card is matched then return...
         if (card.IsMatched())
         {
             return;
         }
 
+        // if first and second card both not null then both cards are not matched so set as unmatched and hide...
         if (_firstCard != null && _secondCard != null)
         {
             ResetUnmatched();
         }
 
+        // if first card is null then assign it...
         if (_firstCard == null)
         {
             _firstCard = card;
             return;
         }
 
+        
+        // if second card is null and not same as first card then assign second card and complete turn and check for match...
         if (_secondCard == null && card != _firstCard)
         {
             _secondCard = card;
@@ -34,7 +39,7 @@ public class CardMatcher
         }
     }
 
-    public void ResetUnmatched()
+    private void ResetUnmatched()
     {
         if (!_firstCard.IsMatched()) _firstCard.HideFrontSide();
         if (!_secondCard.IsMatched()) _secondCard.HideFrontSide();
@@ -43,7 +48,7 @@ public class CardMatcher
         _secondCard = null;
     }
     
-    public void CompleteTurn()
+    private void CompleteTurn()
     {
         var isMatch = _firstCard.GetId() ==  _secondCard.GetId();
         if (isMatch)
@@ -53,55 +58,5 @@ public class CardMatcher
         }
         
         OsTurnCompleted?.Invoke(isMatch);
-    }
-    
-    
-    // Match for 2 opened cards...
-    public bool TryMatch(CardView card)
-    {
-        // if first card is opened then assign first card and return from here as second card is not opened yet...
-        if (_firstCard == null)
-        {
-            _firstCard = card;
-            return false;
-        }
-
-        // if first card is opened then assign second card...
-        _secondCard = card;
-
-        // if first card is and second card is same no need to assign it as a second card...
-        if (_firstCard == _secondCard)
-        {
-            _secondCard = null;
-            return false;
-        }
-
-        // if both cards not same then return false...
-        if (_firstCard.GetId() != _secondCard.GetId()) return false;
-        
-        // if both cards are same then mark as a matched and reset first and second cards for other cards...
-        _firstCard.SetMatched();
-        _secondCard.SetMatched();
-        Reset();
-        return true;
-    }
-
-    private void Reset()
-    {
-        _firstCard = null;
-        _secondCard = null;
-    }
-
-    // if both cards not matched then hide both card again from game manager...
-    public void HideCards()
-    {
-        _firstCard?.HideFrontSide();
-        _secondCard?.HideFrontSide();
-        Reset();
-    }
-    
-    public bool IsSecondCard()
-    {
-        return _secondCard != null;
     }
 }

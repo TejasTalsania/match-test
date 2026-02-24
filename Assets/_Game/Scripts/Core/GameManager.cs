@@ -74,28 +74,8 @@ public class GameManager : MonoBehaviour
     private void OnCardClicked(CardView card)
     {
         matcher.SelectCard(card);
-        
-        // if (matcher.TryMatch(card))
-        // {
-        //     // card matched and do destroy logic....
-        //     GameEvents.FireMatchSuccess();
-        //     GameEvents.FireTurnTaken();
-        //     CheckLevelComplete();
-        //     return;
-        // }
-        //
-        // if (!matcher.IsSecondCard()) return; // Hide cards only if second card clicked and not matched
-        // GameEvents.FireTurnTaken();
-        // StartCoroutine(HideAfterDelay());
     }
     
-    // if not matched then hide card again...
-    private IEnumerator HideAfterDelay()
-    {
-        yield return new WaitForSeconds(0.25F);
-        matcher.HideCards();
-    }
-
     // Level compelte logic...
     private void CheckLevelComplete()
     {
