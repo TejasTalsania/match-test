@@ -34,6 +34,7 @@ public class GamePlayManager : MonoBehaviour
         if (_currentLevel > GameConfig.TotalLevels)
             _currentLevel = 1;
         GameEvents.FireLevelNumberUpdated(_currentLevel); // level number update handle...
+        
         LoadLevel(_currentLevel);
     }
     
